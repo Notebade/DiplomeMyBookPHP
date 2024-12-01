@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable implements \JsonSerializable
+class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +18,11 @@ class User extends Authenticatable implements \JsonSerializable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'id',
+        'first_name',
+        'middle_name',
+        'last_name',
+        'login',
         'email',
         'password',
     ];
@@ -46,8 +50,23 @@ class User extends Authenticatable implements \JsonSerializable
         ];
     }
 
-    public function jsonSerialize()
+    public function getFirstNameAttribute(): string
     {
-        return $this->toArray();
+        return $this->attributes['first_name'];
+    }
+
+    public function getLastNameAttribute(): string
+    {
+        return $this->attributes['last_name'];
+    }
+
+    public function getMiddleNameAttribute(): string
+    {
+        return $this->attributes['middle_name'];
+    }
+
+    public function getFullNameAttribute(): string
+    {
+        return $this->getFirstNameAttribute() . ' ' . $this->getLastNameAttribute() . ' ' . $this->getMiddleNameAttribute();
     }
 }

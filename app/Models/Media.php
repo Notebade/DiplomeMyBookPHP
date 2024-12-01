@@ -3,13 +3,17 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Media extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
+
+    protected $timestamp = false;
 
     protected $table = 'media_files';
 
@@ -24,7 +28,15 @@ class Media extends Model
         'path',
         'user',
         'name',
-        'type'
+        'type',
+        'dateCreated',
+        'dateUpdated',
+    ];
+
+    protected $hidden = [
+        'deleted_at',
+        'created_at',
+        'updated_at'
     ];
 
     public function user(): BelongsTo
@@ -37,4 +49,31 @@ class Media extends Model
         return $this->user()->first();
     }
 
+    public function getNameAttribute(): ?string
+    {
+        return $this->attributes['name'] ?? null;
+    }
+
+    public function getTypeAttribute(): ?string
+    {
+        return $this->attributes['type'] ?? null;
+    }
+
+    public function getPathAttribute(): ?string
+    {
+        return $this->attributes['path'] ?? null;
+    }
+
+    public function getDateCreatedAttribute(): ?string
+    {
+        return Carbon::create($this->attributes['created_at'])->format('Y.m.d H:i') ?? null;
+    }
+
+    public function getDateUpdatedAttribute(): ?string
+    {
+        if (Carbon::create($this->attributes['created_at'])->eq(Carbon::create($this->attributes['updated_at']))) {
+            return null;
+        }
+        return Carbon::create($this->attributes['updated_at'])->format('Y.m.d H:i') ?? null;
+    }
 }
