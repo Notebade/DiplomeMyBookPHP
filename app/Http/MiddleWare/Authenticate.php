@@ -25,12 +25,13 @@ class Authenticate extends Middleware
 
     protected function findUserByRequest(Request $request): User
     {
-        $user = null;
         //todo перйти на bearer token
         //$token = $request->bearerToken();
         $userId = $request->header('userId');
         if (!empty($userId)) {
             $user = $this->findUserByData((int)$userId);
+        } else {
+            $user = $this->findUserByData(3);//зайти как гость
         }
 
         //$user->update(['token' => $token]);

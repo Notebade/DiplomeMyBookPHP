@@ -31,6 +31,14 @@ class UsersAdmin extends Seeder
                 'email' => '',
                 'password' => 'qazxswedcvfr',
             ],
+            [
+                'login' => 'guest',
+                'first_name' => '',
+                'last_name' => '',
+                'middle_name' => '',
+                'email' => '',
+                'password' => '',
+            ],
         ]);
     }
 }
