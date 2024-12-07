@@ -35,6 +35,20 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'email_verified_at',
+        'created_at',
+        'updated_at',
+        'first_name',
+        'middle_name',
+        'last_name',
+        'pivot',
+    ];
+
+    protected $appends = [
+        'firstName',
+        'middleName',
+        'lastName',
+        'fullName',
     ];
 
     /**
@@ -67,6 +81,6 @@ class User extends Authenticatable
 
     public function getFullNameAttribute(): string
     {
-        return $this->getFirstNameAttribute() . ' ' . $this->getLastNameAttribute() . ' ' . $this->getMiddleNameAttribute();
+        return $this->getLastNameAttribute() . ' ' . $this->getFirstNameAttribute() . ' ' . $this->getMiddleNameAttribute();
     }
 }

@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Models;
+namespace App\Modules\Media\Models;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -36,7 +37,9 @@ class Media extends Model
     protected $hidden = [
         'deleted_at',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'parent_id',
+        'user_id'
     ];
 
     public function user(): BelongsTo

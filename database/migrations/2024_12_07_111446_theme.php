@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -12,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('media_files', static function (Blueprint $table) {
+        Schema::create('theme', function (Blueprint $table) {
             $table->id();
-            $table->foreignid('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('code')->unique();
             $table->string('name');
-            $table->string('path');
-            $table->string('type');
-            $table->timestamps();
+            $table->foreignid('subject_id')->nullable()
+                ->references('id')->on('subjects')->onDelete('cascade');
+            $table->integer('position')->nullable()->default(1);
             $table->foreignid('parent_id')->nullable()
-                ->references('id')->on('media_files')->onDelete('cascade');
+                ->references('id')->on('subjects')->onDelete('cascade');
+            $table->timestamps();
             $table->softDeletes();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('media_files');
+        Schema::dropIfExists('theme');
     }
 };

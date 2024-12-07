@@ -1,23 +1,25 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Http\Controllers;
+namespace App\Modules\Discipline\Controllers;
 
-use App\Models\Media;
+use App\Http\Controllers\Controller;
+use App\Modules\Discipline\Models\Discipline;
 use App\Wrapper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
-class MediaController extends Controller
+class DisciplineController extends Controller
 {
     use Wrapper;
-    public function show(Media $media): Media
+
+    public function show(Discipline $discipline): Discipline
     {
-        return $media;
+        return $discipline;
     }
 
-    public function create(Request $request): array
+    public function create(Request $request): array|Discipline
     {
         try {
             $validator = $this->getDataByRequest($request);
@@ -28,14 +30,18 @@ class MediaController extends Controller
             ];
         }
         try  {
-            Media::create($validator);
+           $discipline = Discipline::create($validator);
+            if (!empty($validator['authors'])) {
+                $authorIds = array_column($validator['authors'], 'id');
+                $discipline->authors()->sync($authorIds);
+            }
         } catch (\Exception $e){
             return self::failed($e->getMessage());
         }
-        return self::success();
+        return $discipline;
     }
 
-    public function update(Request $request, Media $media): array
+    public function update(Request $request, Discipline $discipline): array
     {
         try {
             $validator = $this->getDataByRequest($request);
@@ -45,41 +51,46 @@ class MediaController extends Controller
                 'message' => $e->getMessage()
             ];
         }
-        $media->fill($validator);
+        $discipline->fill($validator);
         try  {
-            $media->save();
+            $discipline->save();
+            if (!empty($validator['authors'])) {
+                $authorIds = array_column($validator['authors'], 'id');
+                $discipline->authors()->sync($authorIds);
+            }
         } catch (\Exception $e){
             return self::failed($e->getMessage());
         }
         return self::success();
     }
 
-    public function destroy(Media $media): array
+    public function destroy(Discipline $discipline): array
     {
         try {
-            $media->delete();
+            $discipline->delete();
         } catch (\Exception $e) {
             return self::failed($e->getMessage());
         }
         return self::success();
     }
 
+    /**
+     * @throws ValidationException
+     */
     private function getDataByRequest(Request $request): array
     {
         $data = $request->all();
         $data['user_id'] = Auth::user()->id;
-        $data['path'] = $request->file('file')->store('uploads', 'public');
-        $data['type'] = $request->file('file')->getMimeType();
-        $data['name'] = $request->file('file')->getClientOriginalName();
+        $data['media_id'] = $data['media']['id'] ?? null;
         return validator(
             $data,
             [
-                'parentId' => 'nullable|integer',
-                'file' => 'required|max:102400',
-                'user_id' => 'nullable|integer',
-                'path' => 'required|string',
-                'type' => 'required|string',
+                'code' => 'required|string',
+                'description' => 'nullable|string',
                 'name' => 'required|string',
+                'media_id' => 'nullable|integer',
+                'user_id' => 'required|integer',
+                'authors' => 'nullable|array',
             ]
         )->validate();
     }
