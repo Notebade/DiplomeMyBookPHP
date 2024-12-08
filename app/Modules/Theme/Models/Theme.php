@@ -3,9 +3,11 @@
 namespace App\Modules\Theme\Models;
 
 use App\Modules\Subject\Models\Subjects;
+use App\Text\Models\Text;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Theme extends Model
@@ -35,7 +37,8 @@ class Theme extends Model
     protected $appends = [
         'position',
         'name',
-        'parent'
+        'parent',
+        'text',
     ];
 
     public function getPositionAttribute(): int
@@ -58,8 +61,28 @@ class Theme extends Model
         return $this->belongsTo(Subjects::class, 'subject_id');
     }
 
+    public function texts(): HasMany
+    {
+        return $this->hasMany(Text::class, 'theme_id');
+    }
+
     public function getParentAttribute(): ?Theme
     {
         return $this->parent()->first();
+    }
+
+    private function sortingText(iterable $data): array
+    {
+        $texts = [];
+        foreach ($data as $value) {
+            $texts[$value->position] = $value;
+        }
+        ksort($texts);
+        return array_values($texts);
+    }
+
+    public function getTextAttribute(): ?iterable
+    {
+        return $this->sortingText($this->texts()->get());
     }
 }

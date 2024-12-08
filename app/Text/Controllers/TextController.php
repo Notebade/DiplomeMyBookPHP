@@ -1,21 +1,23 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Modules\Theme\Controllers;
+namespace App\Text\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Subject\Models\Subjects;
 use App\Modules\Theme\Models\Theme;
+use App\Text\Models\Text;
 use App\Wrapper;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
-class ThemeController extends Controller
+class TextController extends Controller
 {
     use Wrapper;
 
-    public function show(Theme $theme): Theme
+    public function show(Text $text): Text
     {
-        return $theme;
+        return $text;
     }
 
     public function create(Request $request): array
@@ -29,20 +31,24 @@ class ThemeController extends Controller
             ];
         }
         try  {
-            $themes = [];
-            foreach ($validator as $value) {
-                $themes[] = Theme::create($value);
+            $text = [];
+            foreach ($validator as $key => $value) {
+                $text[$key] = Text::create($value);
+                if (!empty($value['media'])) {
+                    $mediaIds = array_column($validator['media'], 'id');
+                    $text[$key]->media()->sync($mediaIds);
+                }
             }
         } catch (\Exception $e){
             return self::failed($e->getMessage());
         }
-        return $themes;
+        return $text;
     }
 
-    public function update(Request $request, Theme $theme): array
+    public function update(Request $request, Theme $theme, Text $text): array
     {
         try {
-            $validator = $this->getDataByRequest([$request->all()]);
+            $validator = $this->getDataByRequest([$request->all()], $theme);
         } catch (ValidationException $e) {
             return [
                 'status' => false,
@@ -51,8 +57,12 @@ class ThemeController extends Controller
         }
         try  {
             foreach ($validator as $value) {
-                $theme->fill($value);
-                $theme->save();
+                $text->fill($value);
+                $text->save();
+                if (!empty($value['media'])) {
+                    $mediaIds = array_column($validator['media'], 'id');
+                    $text->media()->sync($mediaIds);
+                }
             }
         } catch (\Exception $e){
             return self::failed($e->getMessage());
@@ -60,10 +70,10 @@ class ThemeController extends Controller
         return self::success();
     }
 
-    public function destroy(Theme $theme): array
+    public function destroy(Text $text): array
     {
         try {
-            $theme->delete();
+            $text->delete();
         } catch (\Exception $e) {
             return self::failed($e->getMessage());
         }
@@ -76,16 +86,14 @@ class ThemeController extends Controller
     private function getDataByRequest(array $data): array
     {
         foreach ($data as &$value) {
-            $value['parent_id'] = $value['theme']['id'] ?? null;
-            $value['subject_id'] = $value['subject']['id'] ?? null;
+            $value['theme_id'] = $theme?->id ?? null;
             $value = validator(
                 $value,
                 [
-                    'code' => 'required|string',
-                    'name' => 'required|string',
-                    'parent_id' => 'nullable|integer',
+                    'text' => 'required|string',
+                    'media' => 'nullable|array',
                     'position' => 'required|integer',
-                    'subject_id' => 'required|integer',
+                    'theme_id' => 'required|integer',
                 ]
             )->validate();
         }

@@ -9,6 +9,7 @@ use App\Modules\Discipline\Controllers\DisciplineController;
 use App\Modules\Media\Controllers\MediaController;
 use App\Modules\Subject\Controllers\SubjectsController;
 use App\Modules\Theme\Controllers\ThemeController;
+use App\Text\Controllers\TextController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -32,6 +33,7 @@ Route::prefix('/media')->group(function () {
         Route::delete('', [MediaController::class, 'destroy']);
     });
     Route::post('', [MediaController::class, 'create']);
+    Route::post('/many', [MediaController::class, 'createMany']);
 });
 
 Route::prefix('/test')->group(function () {
@@ -52,17 +54,28 @@ Route::prefix('/subject')->group(function () {
         Route::get('', [SubjectsController::class, 'show']);
         Route::put('', [SubjectsController::class, 'update']);
         Route::delete('', [SubjectsController::class, 'destroy']);
-        Route::prefix('/theme')->group(function () {
-            Route::prefix('{theme:id}')->group(function () {
-                Route::get('', [ThemeController::class, 'show']);
-                Route::put('', [ThemeController::class, 'update']);
-                Route::delete('', [ThemeController::class, 'destroy']);
-            });
-            Route::post('', [ThemeController::class, 'create']);
-        });
     });
     Route::post('', [SubjectsController::class, 'create']);
 });
+
+Route::prefix('/theme')->group(function () {
+    Route::prefix('{theme:id}')->group(function () {
+        Route::get('', [ThemeController::class, 'show']);
+        Route::put('', [ThemeController::class, 'update']);
+        Route::delete('', [ThemeController::class, 'destroy']);
+    });
+    Route::post('', [ThemeController::class, 'create']);
+});
+
+Route::prefix('/text')->group(function () {
+    Route::prefix('{text:id}')->group(function () {
+        Route::get('', [TextController::class, 'show']);
+        Route::put('', [TextController::class, 'update']);
+        Route::delete('', [TextController::class, 'destroy']);
+    });
+    Route::post('', [TextController::class, 'create']);
+});
+
 
 Route::prefix('/practice')->group(function () {
     Route::get('/{Practice:id}', [PracticeController::class, 'show']);
