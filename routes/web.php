@@ -21,6 +21,7 @@ Route::get('/token', function () {
 });
 
 Route::prefix('/user')->group(function () {
+    Route::post('/logging', [UserController::class, 'logging']);
     Route::prefix('{users:id}')->group(function () {
         Route::get('', [UserController::class, 'index']);
     });
