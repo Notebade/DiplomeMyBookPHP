@@ -2,10 +2,10 @@
 declare(strict_types=1);
 
 use App\Http\MiddleWare\Authenticate;
-use App\Http\MiddleWare\HandleCors;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Middleware\HandleCors;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -14,10 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //todo тут нужно авторизацию сделать по токену
         $middleware->use([
-            Authenticate::class,
             HandleCors::class,
+            Authenticate::class,
         ]);
         $middleware->validateCsrfTokens(
             except: ['*',]
