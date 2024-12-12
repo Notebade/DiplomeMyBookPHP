@@ -25,6 +25,7 @@ class User extends Authenticatable
         'login',
         'email',
         'password',
+        'remember_token',
     ];
 
     /**
@@ -82,5 +83,14 @@ class User extends Authenticatable
     public function getFullNameAttribute(): string
     {
         return $this->getLastNameAttribute() . ' ' . $this->getFirstNameAttribute() . ' ' . $this->getMiddleNameAttribute();
+    }
+
+    public function jsonSerialize(bool $printToken = false): array
+    {
+        $user = self::toArray();
+        if($printToken) {
+            $user['token'] = $this->remember_token;
+        }
+        return $user;
     }
 }

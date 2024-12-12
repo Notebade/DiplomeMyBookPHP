@@ -6,54 +6,32 @@ namespace App\Http\MiddleWare;
 use App\Models\User;
 use Closure;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 class Authenticate extends Middleware
 {
     public function handle($request, Closure $next, ...$guards)
     {
-        try {
-            Auth::login($this->findUserByRequest($request));
-        } catch (\Exception $e) {
-            return response(['status' => false, 'message' => $e->getMessage(),], 401);
+        $excludedRoutes = [
+            'user/logging',
+        ];
+        if (in_array($request->path(), $excludedRoutes)) {
+            return $next($request);
         }
+
+        $token = $request->bearerToken();
+
+        if (!$token || empty($this->findUserByData($token))) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        Auth::login($this->findUserByData($token));
 
         return parent::handle($request, $next, $guards);
     }
 
-    protected function findUserByRequest(Request $request): User
+    protected function findUserByData(string $token): ?User
     {
-        //todo перйти на bearer token
-        //$token = $request->bearerToken();
-        $userId = $request->header('userId');
-        if (!empty($userId)) {
-            $user = $this->findUserByData((int)$userId);
-        } else {
-            $user = $this->findUserByData(3);//зайти как гость
-        }
-
-        //$user->update(['token' => $token]);
-        return $user;
-    }
-
-    protected function findUserByData(int $id): ?User
-    {
-        if (!empty($id)) {
-            $data = [
-                'id' => $id,
-                'login' => Str::random(16),
-                'first_name' => Str::random(16),
-                'last_name' => Str::random(16),
-                'middle_name' => Str::random(16),
-                'email' => Str::random(16),
-                'password' => Str::random(16),
-            ];
-
-            return User::firstOrCreate(['id' => $data['id'],], $data);
-        }
-
-        return null;
+        return User::where('remember_token', $token)->firstOrFail();
     }
 }

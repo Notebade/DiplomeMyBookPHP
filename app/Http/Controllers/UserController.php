@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
@@ -34,8 +35,11 @@ class UserController extends Controller
                 'message' => $e->getMessage()
             ];
         }
-        return User::where('login', $validator['login'])
+        $user = User::where('login', $validator['login'])
             ->where('password', $validator['password'])->firstOrFail();
+        $token = Str::random(40);
+        $user->update(['remember_token' => $token]);
+        return $user->jsonSerialize(true);
     }
 
     /**

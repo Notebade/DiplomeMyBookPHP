@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignid('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('name');
             $table->string('path');
-            $table->string('type');
+            $table->string('type')->nullable();
             $table->timestamps();
             $table->foreignid('parent_id')->nullable()
                 ->references('id')->on('media_files')->onDelete('cascade');
