@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Modules\Discipline\Models\Discipline;
+use Illuminate\Support\Facades\Auth;
 
 class ListController extends Controller
 {
@@ -13,8 +14,15 @@ class ListController extends Controller
         return Discipline::all();
     }
 
-    public function usersShows(): \Illuminate\Database\Eloquent\Collection
+    public function usersShows(): array
     {
-        return User::all();
+        $users = [];
+        foreach (User::all() as $user) {
+            if($user->id == Auth::getUser()->id) {
+                continue;
+            }
+            $users[] = $user;
+        }
+        return $users;
     }
 }
