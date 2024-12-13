@@ -16,7 +16,7 @@ class DisciplineController extends Controller
 
     public function show(Discipline $discipline): array
     {
-        return $discipline->jsonSerialize();
+        return $discipline->jsonSerialize(true);
     }
 
     public function create(Request $request): array|Discipline
