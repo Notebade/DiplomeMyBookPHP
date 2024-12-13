@@ -65,30 +65,35 @@ class User extends Authenticatable
         ];
     }
 
-    public function getFirstNameAttribute(): string
+    public function getFirstNameAttribute(): ?string
     {
         return $this->attributes['first_name'];
     }
 
-    public function getLastNameAttribute(): string
+    public function getLastNameAttribute(): ?string
     {
         return $this->attributes['last_name'];
     }
 
-    public function getMiddleNameAttribute(): string
+    public function getMiddleNameAttribute(): ?string
     {
         return $this->attributes['middle_name'];
     }
 
-    public function getFullNameAttribute(): string
+    public function getFullNameAttribute(): ?string
     {
+        if (empty($this->getFirstNameAttribute())
+            && empty($this->getMiddleNameAttribute())
+            && empty($this->getLastNameAttribute())) {
+            return null;
+        }
         return $this->getLastNameAttribute() . ' ' . $this->getFirstNameAttribute() . ' ' . $this->getMiddleNameAttribute();
     }
 
     public function jsonSerialize(bool $printToken = false): array
     {
         $user = self::toArray();
-        if($printToken) {
+        if ($printToken) {
             $user['token'] = $this->remember_token;
         }
         return $user;
