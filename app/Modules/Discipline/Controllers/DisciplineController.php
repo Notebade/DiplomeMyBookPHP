@@ -14,9 +14,9 @@ class DisciplineController extends Controller
 {
     use Wrapper;
 
-    public function show(Discipline $discipline): Discipline
+    public function show(Discipline $discipline): array
     {
-        return $discipline;
+        return $discipline->jsonSerialize();
     }
 
     public function create(Request $request): array|Discipline

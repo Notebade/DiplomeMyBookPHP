@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Discipline extends Model
 {
@@ -81,5 +82,19 @@ class Discipline extends Model
     public function getMediaAttribute(): ?Media
     {
         return $this->media()->first();
+    }
+
+    public function jsonSerialize(bool $user = false): array
+    {
+        $result = self::toArray();
+        if($user)
+        {
+            foreach ($result['authors'] as $key => &$item) {
+                if(Auth::getUser()->id === $item['id']) {
+                    unset($result['authors'][$key]);
+                }
+            }
+        }
+        return $result;
     }
 }
