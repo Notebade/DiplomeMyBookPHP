@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             UsersAdmin::class,
             DisciplineBase::class,
             SubjectBase::class,
+            BaseTheme::class,
         ]);
     }
 }
