@@ -85,10 +85,12 @@ Route::prefix('/practice')->group(function () {
 
 
 Route::prefix('/list')->group(function () {
-    Route::get('/media', [ListController::class, 'mediaShows']);
-    Route::get('/users', [ListController::class, 'usersShows']);
-    Route::get('/disciplines', [ListController::class, 'disciplineShows']);
-    Route::get('/subjects', [ListController::class, 'subjectShows']);
-    Route::get('/tests', [ListController::class, 'testsShows']);
-    Route::get('/practices', [ListController::class, 'practicesShows']);
+    Route::post('/media', [ListController::class, 'mediaShows']);
+    Route::post('/users', [ListController::class, 'usersShows']);
+    Route::post('/disciplines', [ListController::class, 'disciplineShows']);
+    Route::post('/subjects', [ListController::class, 'subjectShows']);
+    Route::post('/themes', [ListController::class, 'themesShows']);
+    Route::post('/text', [ListController::class, 'textShows']);
+    Route::post('/tests', [ListController::class, 'testsShows']);
+    Route::post('/practices', [ListController::class, 'practicesShows']);
 });
