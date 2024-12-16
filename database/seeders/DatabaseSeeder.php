@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             DisciplineBase::class,
             SubjectBase::class,
             BaseTheme::class,
+            TextBase::class,
         ]);
     }
 }
