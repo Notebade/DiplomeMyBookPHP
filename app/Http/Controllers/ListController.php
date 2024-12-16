@@ -55,7 +55,7 @@ class ListController extends Controller
 
     public function themesShows(Request $request)
     {
-        $data = $this->getDataByRequestSubjects($request);
+        $data = $this->getDataByRequestThemes($request);
         $theme = Theme::where('subject_id', $data['subjectsId']);
         if (!empty($data['name'])) {
             //todo фильтр
