@@ -39,6 +39,7 @@ class Theme extends Model
         'name',
         'parent',
         'text',
+        'subjectId',
     ];
 
     public function getPositionAttribute(): int
@@ -84,6 +85,11 @@ class Theme extends Model
     public function getTextAttribute(): ?iterable
     {
         return $this->sortingText($this->texts()->get());
+    }
+
+    public function getSubjectIdAttribute(): ?int
+    {
+        return $this->attributes['subject_id'] ?? null;
     }
 
     public function jsonSerialize(bool $text = false): array
