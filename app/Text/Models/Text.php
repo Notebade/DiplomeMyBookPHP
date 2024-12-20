@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Text\Models;
 
 use App\Models\User;
+use App\Modules\Media\Models\Media;
 use App\Modules\Theme\Models\Theme;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -43,7 +44,7 @@ class Text extends Model
 
     public function media(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'text_media', 'text_id', 'media_id');
+        return $this->belongsToMany(Media::class, 'text_media', 'text_id', 'media_id');
     }
 
     public function getMediaAttribute(): mixed
