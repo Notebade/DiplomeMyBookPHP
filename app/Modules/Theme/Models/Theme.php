@@ -85,4 +85,17 @@ class Theme extends Model
     {
         return $this->sortingText($this->texts()->get());
     }
+
+    public function jsonSerialize(bool $text = false): array
+    {
+        if ($text) {
+            return [
+                'id' => $this->id,
+                'name' => $this->name,
+                'code' => $this->code,
+                'position' => $this->position,
+            ];
+        }
+        return self::toArray();
+    }
 }

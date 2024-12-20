@@ -33,7 +33,7 @@ class Text extends Model
     ];
 
     protected $appends = [
-        //'theme',
+        'media'
     ];
 
     protected function theme(): BelongsTo
@@ -46,8 +46,8 @@ class Text extends Model
         return $this->belongsToMany(User::class, 'text_media', 'text_id', 'media_id');
     }
 
-    public function getThemeAttribute(): ?Theme
+    public function getMediaAttribute(): mixed
     {
-        return $this->theme()->first();
+        return $this->media()->get();
     }
 }
