@@ -32,7 +32,7 @@ class ThemeController extends Controller
         return ++$position;
     }
 
-    public function create(Request $request): array
+    public function create(Request $request)
     {
         try {
             $validator = $this->getDataByRequest([$request->all()]);
@@ -43,14 +43,14 @@ class ThemeController extends Controller
             ];
         }
         try  {
-            $themes = [];
+            $theme = [];
             foreach ($validator as $value) {
-                $themes[] = Theme::create($value);
+                $theme = Theme::create($value);
             }
         } catch (\Exception $e){
             return self::failed($e->getMessage());
         }
-        return $themes;
+        return $theme;
     }
 
     public function update(Request $request, Theme $theme): array
@@ -66,9 +66,9 @@ class ThemeController extends Controller
         try  {
             foreach ($validator as $value) {
                 $themes = Theme::where('subject_id', $value['subject_id'])
-                ->where('position', '>', $value['position'])->get();
+                ->where('position', '>=', $value['position'])->get();
                 foreach ($themes as $item) {
-                    $theme->update(['position' => $item->position + 1]);
+                    $item->update(['position' => $item->position + 1]);
                 }
                 $theme->fill($value);
                 $theme->save();
