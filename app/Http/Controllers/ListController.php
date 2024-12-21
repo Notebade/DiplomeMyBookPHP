@@ -33,11 +33,16 @@ class ListController extends Controller
     public function textShows(Request $request)
     {
         $data = $this->getDataByRequestTexts($request);
-        $theme = Text::where('theme_id', $data['themeId']);
+        $text = Text::where('theme_id', $data['themeId']);
         if (!empty($data['name'])) {
             //todo фильтр
         }
-        return $theme->get();
+        $texts = [];
+        foreach ($text->get() as $value) {
+            $texts[$value->position] = $value;
+        }
+        ksort($texts);
+        return array_values($texts);
     }
 
 
@@ -53,14 +58,19 @@ class ListController extends Controller
         )->validate();
     }
 
-    public function themesShows(Request $request)
+    public function themesShows(Request $request): array
     {
         $data = $this->getDataByRequestThemes($request);
         $theme = Theme::where('subject_id', $data['subjectsId']);
         if (!empty($data['name'])) {
             //todo фильтр
         }
-        return $theme->get();
+        $themes = [];
+        foreach ($theme->get() as $value) {
+            $themes[$value->position] = $value;
+        }
+        ksort($themes);
+        return array_values($themes);
     }
 
 
@@ -96,7 +106,7 @@ class ListController extends Controller
     {
         $users = [];
         foreach (User::all() as $user) {
-            if($user->id == Auth::getUser()->id) {
+            if ($user->id == Auth::getUser()->id) {
                 continue;
             }
             $users[] = $user;
