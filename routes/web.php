@@ -65,7 +65,9 @@ Route::prefix('/theme')->group(function () {
         Route::put('', [ThemeController::class, 'update']);
         Route::delete('', [ThemeController::class, 'destroy']);
     });
+    Route::post('/lastPosition', [ThemeController::class, 'lastPosition']);
     Route::post('', [ThemeController::class, 'create']);
+        Route::post('/many', [ThemeController::class, 'createMany']);
 });
 
 Route::prefix('/text')->group(function () {

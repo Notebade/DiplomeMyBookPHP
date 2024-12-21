@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Modules\Theme\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Subject\Models\Subjects;
 use App\Modules\Theme\Models\Theme;
 use App\Wrapper;
 use Illuminate\Http\Request;
@@ -18,10 +19,23 @@ class ThemeController extends Controller
         return $theme;
     }
 
+    public function lastPosition(Request $request): int
+    {
+        $data = $request->all();
+        $subjects = Subjects::where('id', $data['subjectId'] ?? null)->first();
+        $position = 0;
+        foreach ($subjects->themes as $theme) {
+            if($theme->position > $position) {
+                $position = $theme->position;
+            }
+        }
+        return ++$position;
+    }
+
     public function create(Request $request): array
     {
         try {
-            $validator = $this->getDataByRequest($request->all());
+            $validator = $this->getDataByRequest([$request->all()]);
         } catch (ValidationException $e) {
             return [
                 'status' => false,
@@ -51,6 +65,11 @@ class ThemeController extends Controller
         }
         try  {
             foreach ($validator as $value) {
+                $themes = Theme::where('subject_id', $value['subject_id'])
+                ->where('position', '>', $value['position'])->get();
+                foreach ($themes as $item) {
+                    $theme->update(['position' => $item->position + 1]);
+                }
                 $theme->fill($value);
                 $theme->save();
             }
