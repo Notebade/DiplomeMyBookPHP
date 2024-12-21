@@ -65,10 +65,15 @@ class ThemeController extends Controller
         }
         try  {
             foreach ($validator as $value) {
-                $themes = Theme::where('subject_id', $value['subject_id'])
-                ->where('position', '>=', $value['position'])->get();
-                foreach ($themes as $item) {
-                    $item->update(['position' => $item->position + 1]);
+                $currentPosition = $theme->position;
+                if ($value['position'] < $currentPosition) {
+                    Theme::where('subject_id', $value['subject_id'])
+                        ->whereBetween('position', [$value['position'], $currentPosition - 1])
+                        ->increment('position');
+                } elseif ($value['position'] > $currentPosition) {
+                    Theme::where('subject_id', $value['subject_id'])
+                        ->whereBetween('position', [$currentPosition + 1, $value['position']])
+                        ->decrement('position');
                 }
                 $theme->fill($value);
                 $theme->save();
