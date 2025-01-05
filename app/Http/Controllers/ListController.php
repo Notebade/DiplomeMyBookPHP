@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Modules\User\Models\Groups;
 use App\Modules\User\Models\Rights;
 use App\Modules\User\Models\User;
 use App\Modules\Discipline\Models\Discipline;
@@ -114,6 +115,7 @@ class ListController extends Controller
             $data,
             [
                 'rights' => 'nullable|array',
+                'active' => 'nullable|boolean',
             ]
         )->validate();
     }
@@ -122,8 +124,12 @@ class ListController extends Controller
     {
         $users = [];
         $data = $this->getDataByRequestUsers($request);
-        $usersModels = User::where('active', true)
-            ->select('users.*');
+        if (!empty($data['active'])) {
+            $usersModels = User::where('active', $data['active']);
+        } else {
+            $usersModels = User::where('active', true);
+        }
+            $usersModels->select('users.*');
         if(!empty($data['rights'])) {
             $usersModels->leftJoin('user_right', 'user_right.user_id', '=', 'users.id');
             $usersModels->whereIn('user_right.right_id', Rights::where('code', $data['rights'])->pluck('id'));
@@ -135,5 +141,10 @@ class ListController extends Controller
             $users[] = $user;
         }
         return $users;
+    }
+
+    public function groupsShows(): \Illuminate\Database\Eloquent\Collection
+    {
+        return Groups::all();
     }
 }

@@ -29,6 +29,7 @@ Route::prefix('/user')->group(function () {
     Route::post('/logging', [UserController::class, 'logging']);
     Route::prefix('{users:id}')->group(function () {
         Route::get('', [UserController::class, 'index']);
+        Route::get('/active', [UserController::class, 'activeUser']);
     });
 });
 
@@ -93,6 +94,7 @@ Route::prefix('/practice')->group(function () {
 
 Route::prefix('/list')->group(function () {
     Route::post('/media', [ListController::class, 'mediaShows']);
+    Route::post('/groups', [ListController::class, 'groupsShows']);
     Route::post('/users', [ListController::class, 'usersShows']);
     Route::post('/disciplines', [ListController::class, 'disciplineShows']);
     Route::post('/subjects', [ListController::class, 'subjectShows']);

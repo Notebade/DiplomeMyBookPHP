@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
@@ -15,19 +16,20 @@ class UserController extends Controller
 {
 
     use Wrapper;
-    public function index()
+    public function index(User $user): User
     {
-
+        return $user;
     }
 
-    public function create()
+    public function activeUser(User $user): array
     {
-
-    }
-
-    public function store(Request $request)
-    {
-
+        $user->active = true;
+        try  {
+            $user->save();
+        } catch (\Exception $e){
+            return self::failed($e->getMessage());
+        }
+        return self::success();
     }
 
     public function getInvite(Request $request)
@@ -118,6 +120,9 @@ class UserController extends Controller
         $data['first_name'] = $data['firstName'];
         $data['last_name'] = $data['lastName'];
         $data['middle_name'] = $data['middleName'];
+        if (empty($data['active'])) {
+            $data['active'] = false;
+        }
         return validator(
             $data,
             [
@@ -128,6 +133,7 @@ class UserController extends Controller
                 'last_name' => 'required|string',
                 'email' => 'required|string|email',
                 'middle_name' => 'required|string',
+                'active' => 'required|boolean',
             ]
         )->validate();
     }
