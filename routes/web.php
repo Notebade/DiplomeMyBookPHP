@@ -21,6 +21,11 @@ Route::get('/token', function () {
 });
 
 Route::prefix('/user')->group(function () {
+    Route::prefix('/zov')->group(function () {
+        Route::get('', [UserController::class, 'getInvite']);
+        Route::post('', [UserController::class, 'invite']);
+    });
+    Route::post('/register', [UserController::class, 'register']);
     Route::post('/logging', [UserController::class, 'logging']);
     Route::prefix('{users:id}')->group(function () {
         Route::get('', [UserController::class, 'index']);

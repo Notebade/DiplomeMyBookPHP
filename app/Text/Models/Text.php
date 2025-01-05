@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Text\Models;
 
-use App\Models\User;
+use App\Modules\User\Models\User;
 use App\Modules\Media\Models\Media;
 use App\Modules\Theme\Models\Theme;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

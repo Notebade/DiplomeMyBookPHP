@@ -22,6 +22,7 @@ class UsersAdmin extends Seeder
                 'middle_name' => 'Igorevich',
                 'email' => 'dimondi1010@gmail.com',
                 'password' => 'qweasdzxc',
+                'active' => 1,
             ],
             [
                 'login' => 'Bassile',
@@ -30,6 +31,7 @@ class UsersAdmin extends Seeder
                 'middle_name' => '',
                 'email' => '',
                 'password' => 'zxcasdqwe',
+                'active' => 1,
             ],
             [
                 'login' => 'Valter',
@@ -38,6 +40,7 @@ class UsersAdmin extends Seeder
                 'middle_name' => '',
                 'email' => '',
                 'password' => 'qazxswedc',
+                'active' => 1,
             ],
             [
                 'login' => 'guest',
@@ -46,6 +49,16 @@ class UsersAdmin extends Seeder
                 'middle_name' => '',
                 'email' => '',
                 'password' => '',
+                'active' => 1,
+            ],
+            [
+                'login' => 'student',
+                'first_name' => 'ученик',
+                'last_name' => '11',
+                'middle_name' => 'А',
+                'email' => '',
+                'password' => 'student1',
+                'active' => 1,
             ],
         ]);
     }

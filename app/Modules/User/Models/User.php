@@ -1,8 +1,12 @@
 <?php
+declare(strict_types=1);
 
-namespace App\Models;
+namespace App\Modules\User\Models;
 
+use App\Modules\Theme\Models\Theme;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -25,6 +29,7 @@ class User extends Authenticatable
         'login',
         'email',
         'password',
+        'active',
         'remember_token',
     ];
 
@@ -50,6 +55,8 @@ class User extends Authenticatable
         'middleName',
         'lastName',
         'fullName',
+        'rights',
+        'group'
     ];
 
     /**
@@ -65,6 +72,16 @@ class User extends Authenticatable
         ];
     }
 
+    public function groups(): BelongsToMany
+    {
+        return $this->belongsToMany(Groups::class, 'user_group', 'user_id', 'group_id');
+    }
+
+    public function rights(): BelongsToMany
+    {
+        return $this->belongsToMany(Rights::class, 'user_right', 'user_id', 'right_id');
+    }
+
     public function getFirstNameAttribute(): ?string
     {
         return $this->attributes['first_name'];
@@ -78,6 +95,16 @@ class User extends Authenticatable
     public function getMiddleNameAttribute(): ?string
     {
         return $this->attributes['middle_name'];
+    }
+
+    public function getRightsAttribute(): ?iterable
+    {
+        return $this->rights()->get();
+    }
+
+    public function getGroupAttribute(): ?object
+    {
+        return $this->groups()->get()?->first();
     }
 
     public function getFullNameAttribute(): ?string

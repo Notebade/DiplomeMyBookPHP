@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Media\Models;
 
-use App\Models\User;
+use App\Modules\User\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Modules\User\Models\Rights;
+use App\Modules\User\Models\User;
 use App\Modules\Discipline\Models\Discipline;
 use App\Modules\Subject\Models\Subjects;
 use App\Modules\Theme\Models\Theme;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use function Laravel\Prompts\select;
 
 class ListController extends Controller
 {
@@ -102,10 +104,31 @@ class ListController extends Controller
         )->validate();
     }
 
-    public function usersShows(): array
+    /**
+     * @throws ValidationException
+     */
+    private function getDataByRequestUsers(Request $request): array
+    {
+        $data = $request->all();
+        return validator(
+            $data,
+            [
+                'rights' => 'nullable|array',
+            ]
+        )->validate();
+    }
+
+    public function usersShows(Request $request): array
     {
         $users = [];
-        foreach (User::all() as $user) {
+        $data = $this->getDataByRequestUsers($request);
+        $usersModels = User::where('active', true)
+            ->select('users.*');
+        if(!empty($data['rights'])) {
+            $usersModels->leftJoin('user_right', 'user_right.user_id', '=', 'users.id');
+            $usersModels->whereIn('user_right.right_id', Rights::where('code', $data['rights'])->pluck('id'));
+        }
+        foreach ($usersModels->get() as $user) {
             if ($user->id == Auth::getUser()->id) {
                 continue;
             }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Discipline\Models;
 
-use App\Models\User;
+use App\Modules\User\Models\User;
 use App\Modules\Media\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

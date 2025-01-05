@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\MiddleWare;
 
-use App\Models\User;
+use App\Modules\User\Models\User;
 use Closure;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Support\Facades\Auth;
@@ -12,10 +12,15 @@ class Authenticate extends Middleware
 {
     public function handle($request, Closure $next, ...$guards)
     {
+        //todo кастыль для обхода авторизации
         $excludedRoutes = [
-            'user/logging',
+           'user/logging' => ['POST'],
+           'user/register' => ['POST'],
+           'user/zov' => ['GET'],
         ];
-        if (in_array($request->path(), $excludedRoutes)) {
+
+        if (in_array($request->path(), array_keys($excludedRoutes))
+            && in_array($request->getMethod(), $excludedRoutes[$request->path()])) {
             return $next($request);
         }
 

@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             SubjectBase::class,
             BaseTheme::class,
             TextBase::class,
+            RightsSeeder::class,
+            GroupsSeeder::class,
         ]);
     }
 }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Subject\Models;
 
-use App\Models\User;
+use App\Modules\User\Models\User;
 use App\Modules\Discipline\Models\Discipline;
 use App\Modules\Media\Models\Media;
 use App\Modules\Theme\Models\Theme;
