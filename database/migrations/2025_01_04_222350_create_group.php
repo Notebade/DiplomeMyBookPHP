@@ -23,6 +23,20 @@ return new class extends Migration
             $table->foreignid('group_id')->nullable()
                 ->references('id')->on('groups')->onDelete('cascade');
         });
+        Schema::create('discipline_groups', function (Blueprint $table) {
+            $table->id();
+            $table->foreignid('discipline_id')->nullable()
+                ->references('id')->on('disciplines')->onDelete('cascade');
+            $table->foreignid('group_id')->nullable()
+                ->references('id')->on('groups')->onDelete('cascade');
+        });
+        Schema::create('subject_group', function (Blueprint $table) {
+            $table->id();
+            $table->foreignid('subject_id')->nullable()
+                ->references('id')->on('subjects')->onDelete('cascade');
+            $table->foreignid('group_id')->nullable()
+                ->references('id')->on('groups')->onDelete('cascade');
+        });
     }
 
     /**

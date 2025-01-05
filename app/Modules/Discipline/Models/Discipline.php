@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Discipline\Models;
 
+use App\Modules\User\Models\Groups;
 use App\Modules\User\Models\User;
 use App\Modules\Media\Models\Media;
 use Illuminate\Database\Eloquent\Model;
@@ -58,6 +59,11 @@ class Discipline extends Model
     public function authors(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'author_discipline', 'discipline_id', 'user_id');
+    }
+
+    public function groups(): BelongsToMany
+    {
+        return $this->belongsToMany(Groups::class, 'discipline_groups', 'discipline_id', 'group_id');
     }
 
     public function media(): BelongsTo

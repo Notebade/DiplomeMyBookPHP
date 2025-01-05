@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 namespace App\Modules\Subject\Models;
 
+use App\Modules\User\Models\Groups;
 use App\Modules\User\Models\User;
 use App\Modules\Discipline\Models\Discipline;
 use App\Modules\Media\Models\Media;
 use App\Modules\Theme\Models\Theme;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Prompts\Concerns\Themes;
@@ -68,6 +70,11 @@ class Subjects extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function groups(): BelongsToMany
+    {
+        return $this->belongsToMany(Groups::class, 'subject_groups', 'subject_id', 'group_id');
     }
 
     public function discipline(): BelongsTo

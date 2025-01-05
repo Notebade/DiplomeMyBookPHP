@@ -31,6 +31,10 @@ class SubjectsController extends Controller
         }
         try  {
             $subjects = Subjects::create($validator);
+            if (!empty($validator['groups'])) {
+                $groupsIds = array_column($validator['groups'], 'id');
+                $subjects->groups()->sync($groupsIds);
+            }
         } catch (\Exception $e){
             return self::failed($e->getMessage());
         }
@@ -50,6 +54,10 @@ class SubjectsController extends Controller
         $subjects->fill($validator);
         try  {
             $subjects->save();
+            if (!empty($validator['groups'])) {
+                $groupsIds = array_column($validator['groups'], 'id');
+                $subjects->groups()->sync($groupsIds);
+            }
         } catch (\Exception $e){
             return self::failed($e->getMessage());
         }
@@ -84,6 +92,7 @@ class SubjectsController extends Controller
                 'media_id' => 'nullable|integer',
                 'discipline_id' => 'required|integer',
                 'user_id' => 'required|integer',
+                'groups' => 'nullable|array',
             ]
         )->validate();
     }

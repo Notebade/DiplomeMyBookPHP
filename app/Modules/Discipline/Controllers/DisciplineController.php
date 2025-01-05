@@ -35,6 +35,10 @@ class DisciplineController extends Controller
                 $authorIds = array_column($validator['authors'], 'id');
                 $discipline->authors()->sync($authorIds);
             }
+            if (!empty($validator['groups'])) {
+                $groupsIds = array_column($validator['groups'], 'id');
+                $discipline->groups()->sync($groupsIds);
+            }
         } catch (\Exception $e){
             return self::failed($e->getMessage());
         }
@@ -57,6 +61,10 @@ class DisciplineController extends Controller
             if (!empty($validator['authors'])) {
                 $authorIds = array_column($validator['authors'], 'id');
                 $discipline->authors()->sync($authorIds);
+            }
+            if (!empty($validator['groups'])) {
+                $groupsIds = array_column($validator['groups'], 'id');
+                $discipline->groups()->sync($groupsIds);
             }
         } catch (\Exception $e){
             return self::failed($e->getMessage());
@@ -91,6 +99,7 @@ class DisciplineController extends Controller
                 'media_id' => 'nullable|integer',
                 'user_id' => 'required|integer',
                 'authors' => 'nullable|array',
+                'groups' => 'nullable|array',
             ]
         )->validate();
     }
