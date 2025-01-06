@@ -48,6 +48,22 @@ class RightsSeeder extends Seeder
                 'user_id' => '5',
                 'right_id' => '3',
             ],
+            [
+                'user_id' => '7',
+                'right_id' => '3',
+            ],
+            [
+                'user_id' => '8',
+                'right_id' => '3',
+            ],
+            [
+                'user_id' => '9',
+                'right_id' => '2',
+            ],
+            [
+                'user_id' => '10',
+                'right_id' => '1',
+            ],
         ]);
     }
 }
