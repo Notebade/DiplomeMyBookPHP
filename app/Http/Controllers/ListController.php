@@ -12,14 +12,31 @@ use App\Modules\Theme\Models\Theme;
 use App\Text\Models\Text;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use function Laravel\Prompts\select;
 
 class ListController extends Controller
 {
-    public function disciplineShows(): \Illuminate\Database\Eloquent\Collection
+    public function disciplineShows(): iterable
     {
+        $rights = Auth::getUser()->rights()->get()->pluck('code')->toArray();
+        if(in_array('admin', $rights)) {
+            return Discipline::all();
+        }
+        if(in_array('teacher', $rights)) {
+            return Discipline::select('disciplines.*')
+                ->leftJoin('author_discipline', 'author_discipline.discipline_id', '=', 'disciplines.id')
+                ->where(function ($query) {
+                    $query->where('author_discipline.user_id', Auth::getUser()->id)
+                        ->orWhere('disciplines.user_id', Auth::getUser()->id);
+                })
+                ->get();
+        }
+        if(in_array('student', $rights) || in_array('parent', $rights)) {
+            return Discipline::select('disciplines.*')
+                ->leftJoin('discipline_groups', 'discipline_groups.discipline_id', '=', 'disciplines.id')
+                ->whereIn('discipline_groups.group_id', Auth::getUser()->groups()->get()->pluck('id'))
+                ->get();
+        }
         return Discipline::all();
     }
 
@@ -30,6 +47,24 @@ class ListController extends Controller
         if (!empty($data['name'])) {
             //todo фильтр
         }
+
+        $rights = Auth::getUser()->rights()->get()->pluck('code')->toArray();
+        if(in_array('admin', $rights)) {
+            return $subjects->get();
+        }
+        if(in_array('teacher', $rights)) {
+            return $subjects->select('subjects.*')
+                ->where('subjects.user_id', Auth::getUser()->id)
+                ->get();
+        }
+        if(in_array('student', $rights) || in_array('parent', $rights)) {
+            return $subjects->select('subjects.*')
+                ->leftJoin('subject_group', 'subject_group.subject_id', '=', 'subjects.id')
+                ->whereIn('subject_group.group_id', Auth::getUser()->groups()->get()->pluck('id'))
+                ->get();
+        }
+
+
         return $subjects->get();
     }
 
