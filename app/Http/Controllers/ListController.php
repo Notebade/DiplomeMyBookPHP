@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Modules\Discipline\Models\Discipline;
+use App\Modules\Subject\Models\Subjects;
+use App\Modules\Text\Models\Text;
+use App\Modules\Theme\Models\Theme;
 use App\Modules\User\Models\Groups;
 use App\Modules\User\Models\Rights;
 use App\Modules\User\Models\User;
-use App\Modules\Discipline\Models\Discipline;
-use App\Modules\Subject\Models\Subjects;
-use App\Modules\Theme\Models\Theme;
-use App\Text\Models\Text;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class ListController extends Controller

@@ -3,7 +3,7 @@
 namespace App\Modules\Theme\Models;
 
 use App\Modules\Subject\Models\Subjects;
-use App\Text\Models\Text;
+use App\Modules\Text\Models\Text;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

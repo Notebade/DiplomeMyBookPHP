@@ -1,12 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Text\Controllers;
+namespace App\Modules\Text\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Modules\Subject\Models\Subjects;
+use App\Modules\Text\Models\Text;
 use App\Modules\Theme\Models\Theme;
-use App\Text\Models\Text;
 use App\Wrapper;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;

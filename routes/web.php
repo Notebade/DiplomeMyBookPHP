@@ -3,13 +3,14 @@ declare(strict_types=1);
 
 use App\Http\Controllers\ListController;
 use App\Http\Controllers\PracticeController;
-use App\Http\Controllers\TestingController;
 use App\Http\Controllers\UserController;
 use App\Modules\Discipline\Controllers\DisciplineController;
 use App\Modules\Media\Controllers\MediaController;
 use App\Modules\Subject\Controllers\SubjectsController;
+use App\Modules\Test\Controllers\QuestionsController;
+use App\Modules\Test\Controllers\TestingController;
+use App\Modules\Text\Controllers\TextController;
 use App\Modules\Theme\Controllers\ThemeController;
-use App\Text\Controllers\TextController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -44,7 +45,21 @@ Route::prefix('/media')->group(function () {
 });
 
 Route::prefix('/test')->group(function () {
-    Route::get('/{Test:id}', [TestingController::class, 'show']);
+    Route::prefix('{test:id}')->group(function () {
+        Route::get('', [TestingController::class, 'show']);
+        Route::post('', [TestingController::class, 'update']);
+        Route::delete('', [TestingController::class, 'destroy']);
+    });
+    Route::post('', [TestingController::class, 'create']);
+});
+
+Route::prefix('/questions')->group(function () {
+    Route::prefix('{test:id}')->group(function () {
+        Route::get('', [QuestionsController::class, 'show']);
+        Route::post('', [QuestionsController::class, 'update']);
+        Route::delete('', [QuestionsController::class, 'destroy']);
+    });
+    Route::post('', [QuestionsController::class, 'create']);
 });
 
 Route::prefix('/discipline')->group(function () {
