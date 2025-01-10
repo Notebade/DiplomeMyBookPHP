@@ -73,7 +73,7 @@ class UserController extends Controller
         } catch (\Exception $e){
             return self::failed($e->getMessage());
         }
-        return $user->jsonSerialize();
+        return $user->jsonSerialize($validator['active']);
     }
 
     public function test(Request $request): array
