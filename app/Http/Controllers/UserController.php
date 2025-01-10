@@ -70,6 +70,10 @@ class UserController extends Controller
         }
         try  {
             $user = User::create($validator);
+            if($validator['active']) {
+                $token = Str::random(40);
+                $user->update(['remember_token' => $token]);
+            }
         } catch (\Exception $e){
             return self::failed($e->getMessage());
         }
