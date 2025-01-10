@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 
 use App\Modules\Discipline\Models\Discipline;
 use App\Modules\Subject\Models\Subjects;
+use App\Modules\Test\Models\QuestionType;
+use App\Modules\Test\Models\UserAnswersType;
 use App\Modules\Text\Models\Text;
 use App\Modules\Theme\Models\Theme;
 use App\Modules\User\Models\Groups;
@@ -181,5 +183,15 @@ class ListController extends Controller
     public function groupsShows(): \Illuminate\Database\Eloquent\Collection
     {
         return Groups::all();
+    }
+
+    public function questionTypes(): \Illuminate\Database\Eloquent\Collection
+    {
+        return QuestionType::all();
+    }
+
+    public function userAnswersTypes(): \Illuminate\Database\Eloquent\Collection
+    {
+        return UserAnswersType::all();
     }
 }

@@ -10,9 +10,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Answers extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
-    protected $timestamp = false;
+    public $timestamps = false;
 
     protected $table = 'answers';
 
@@ -39,6 +39,7 @@ class Answers extends Model
 
         return [
             'id' => $this->id,
+            'text' => $this->text,
         ];
     }
 }

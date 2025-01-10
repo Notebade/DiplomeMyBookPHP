@@ -5,19 +5,17 @@ namespace App\Modules\Test\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class QuestionType extends Model
+class UserAnswersType extends Model
 {
     use HasFactory;
 
     public $timestamps = false;
 
-    protected $table = 'question_type';
+    protected $table = 'answer_user_test';
 
     protected $fillable = [
         'code',
         'name',
     ];
-
 }

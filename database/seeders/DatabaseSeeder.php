@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             TextBase::class,
             RightsSeeder::class,
             GroupsSeeder::class,
+            TestSeeder::class,
         ]);
     }
 }

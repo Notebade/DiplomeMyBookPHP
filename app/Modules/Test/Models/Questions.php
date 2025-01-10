@@ -13,9 +13,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Questions extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
-    protected $timestamp = false;
+    public $timestamps = false;
 
     protected $table = 'questions';
 
@@ -51,17 +51,17 @@ class Questions extends Model
         return $this->hasMany(Answers::class , 'question_id');
     }
 
-    public function getTypeAttribute(): iterable
+    public function getTypeAttribute(): mixed
     {
         return $this->type()->first();
     }
 
-    public function getMediaAttribute(): iterable
+    public function getMediaAttribute(): mixed
     {
         return $this->media()->first();
     }
 
-    public function getAnswersAttribute(): iterable
+    public function getAnswersAttribute(): mixed
     {
         return $this->answers()->get();
     }

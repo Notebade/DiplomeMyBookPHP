@@ -27,6 +27,9 @@ Route::prefix('/user')->group(function () {
         Route::post('', [UserController::class, 'invite']);
     });
     Route::post('/register', [UserController::class, 'register']);
+    Route::prefix('/test')->group(function () {
+        Route::post('', [UserController::class, 'test']);//todo может быть каждый вопрос обновлять
+    });
     Route::post('/logging', [UserController::class, 'logging']);
     Route::prefix('{users:id}')->group(function () {
         Route::get('', [UserController::class, 'index']);
@@ -54,7 +57,7 @@ Route::prefix('/test')->group(function () {
 });
 
 Route::prefix('/questions')->group(function () {
-    Route::prefix('{test:id}')->group(function () {
+    Route::prefix('{questions:id}')->group(function () {
         Route::get('', [QuestionsController::class, 'show']);
         Route::post('', [QuestionsController::class, 'update']);
         Route::delete('', [QuestionsController::class, 'destroy']);
@@ -108,6 +111,9 @@ Route::prefix('/practice')->group(function () {
 
 
 Route::prefix('/list')->group(function () {
+    Route::get('/questionTypes', [ListController::class, 'questionTypes']);
+    Route::get('/userAnswersTypes', [ListController::class, 'userAnswersTypes']);
+    Route::post('/media', [ListController::class, 'mediaShows']);
     Route::post('/media', [ListController::class, 'mediaShows']);
     Route::post('/groups', [ListController::class, 'groupsShows']);
     Route::post('/users', [ListController::class, 'usersShows']);

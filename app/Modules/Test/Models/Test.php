@@ -12,7 +12,7 @@ class Test extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $timestamp = true;
+    public $timestamps = true;
 
     protected $table = 'test';
 
@@ -37,7 +37,7 @@ class Test extends Model
         return $this->hasMany(Questions::class, 'test_id', 'id');
     }
 
-    public function getQuestionsAttribute(): iterable
+    public function getQuestionsAttribute(): mixed
     {
         return $this->questions()->get();
     }
