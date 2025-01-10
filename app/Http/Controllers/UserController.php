@@ -69,11 +69,11 @@ class UserController extends Controller
             ];
         }
         try  {
-            User::create($validator);
+            $user = User::create($validator);
         } catch (\Exception $e){
             return self::failed($e->getMessage());
         }
-        return self::success();
+        return $user->jsonSerialize();
     }
 
     public function test(Request $request): array
