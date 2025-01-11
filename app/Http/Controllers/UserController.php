@@ -51,11 +51,11 @@ class UserController extends Controller
             ];
         }
         try  {
-            Invite::create($validator);
+            $invite = Invite::create($validator);
         } catch (\Exception $e){
             return self::failed($e->getMessage());
         }
-        return self::success();
+        return $invite->toArray();
     }
 
     public function register(Request $request): array
