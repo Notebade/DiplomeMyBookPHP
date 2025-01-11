@@ -74,6 +74,13 @@ class UserController extends Controller
                 $token = Str::random(40);
                 $user->update(['remember_token' => $token]);
             }
+            if(!empty($validator['group'])) {
+                $user->groups()->sync($validator['group']);
+            }
+            if(!empty($validator['rights'])) {
+                $user->rights()->sync($validator['rights']);
+            }
+            $user->update();
         } catch (\Exception $e){
             return self::failed($e->getMessage());
         }
@@ -213,6 +220,7 @@ class UserController extends Controller
                 'login' => 'required|string',
                 'password' => 'required|string',
                 'rights' => 'required|array',
+                'group' => 'required|array',
                 'first_name' => 'required|string',
                 'last_name' => 'required|string',
                 'email' => 'required|string|email',
