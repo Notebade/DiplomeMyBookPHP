@@ -75,10 +75,11 @@ class UserController extends Controller
                 $user->update(['remember_token' => $token]);
             }
             if(!empty($validator['group'])) {
-                $user->groups()->sync($validator['group']);
+                $user->groups()->sync([$validator['group']['id']]);
             }
             if(!empty($validator['rights'])) {
-                $user->rights()->sync($validator['rights']);
+                $rightsIds = array_column($validator['rights'], 'id');
+                $user->rights()->sync($rightsIds);
             }
             $user->update();
         } catch (\Exception $e){
