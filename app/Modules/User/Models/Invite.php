@@ -30,7 +30,7 @@ class Invite extends Model
       'dateEnd',
     ];
 
-    public function getDateEndAttribute(): Carbon
+    public function getDateEndAttribute(): mixed
     {
         return $this->attributes['date_end'];
     }
