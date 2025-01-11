@@ -40,7 +40,7 @@ class UserController extends Controller
             ->firstOrFail();
     }
 
-    public function invite(Request $request): array
+    public function invite(Request $request): mixed
     {
         try {
             $validator = $this->getDataByRequestInvite($request);
@@ -55,7 +55,7 @@ class UserController extends Controller
         } catch (\Exception $e){
             return self::failed($e->getMessage());
         }
-        return $invite->toArray();
+        return $invite;
     }
 
     public function register(Request $request): array

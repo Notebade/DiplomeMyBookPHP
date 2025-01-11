@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Modules\User\Models;
 
+use Carbon\Carbon;
 use Carbon\Traits\Timestamp;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,7 +30,7 @@ class Invite extends Model
       'dateEnd',
     ];
 
-    public function getDateEndAttribute(): string
+    public function getDateEndAttribute(): Carbon
     {
         return $this->attributes['date_end'];
     }
