@@ -185,6 +185,11 @@ class ListController extends Controller
         return Groups::all();
     }
 
+    public function rightsShows(): \Illuminate\Database\Eloquent\Collection
+    {
+        return Rights::all();
+    }
+
     public function questionTypes(): \Illuminate\Database\Eloquent\Collection
     {
         return QuestionType::all();

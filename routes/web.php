@@ -115,6 +115,7 @@ Route::prefix('/list')->group(function () {
     Route::get('/userAnswersTypes', [ListController::class, 'userAnswersTypes']);
     Route::post('/media', [ListController::class, 'mediaShows']);
     Route::post('/media', [ListController::class, 'mediaShows']);
+    Route::post('/rights', [ListController::class, 'rightsShows']);
     Route::post('/groups', [ListController::class, 'groupsShows']);
     Route::post('/users', [ListController::class, 'usersShows']);
     Route::post('/disciplines', [ListController::class, 'disciplineShows']);
