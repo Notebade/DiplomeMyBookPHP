@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Modules\Discipline\Models\Discipline;
 use App\Modules\Subject\Models\Subjects;
 use App\Modules\Test\Models\QuestionType;
+use App\Modules\Test\Models\Test;
 use App\Modules\Test\Models\UserAnswersType;
 use App\Modules\Text\Models\Text;
 use App\Modules\Theme\Models\Theme;
@@ -83,6 +84,53 @@ class ListController extends Controller
         }
         ksort($texts);
         return array_values($texts);
+    }
+
+    public function testsShows(Request $request): mixed
+    {
+        $rights = Auth::getUser()->rights()->get()->pluck('code')->toArray();
+        $data = $this->getDataByRequestTest($request);
+        if (empty($data['themeId'])) {
+            if(in_array('admin', $rights)) {
+                return Test::all();
+            }
+            if(in_array('teacher', $rights)) {
+                return Test::select('test.*')
+                    ->leftJoin('theme', 'theme.id', '=', 'test.theme_id')
+                    ->leftJoin('subjects', 'theme.subject_id', '=', 'theme.id')
+                    ->where('subjects.user_id', Auth::getUser()->id)
+                    ->groupBy('test.id')
+                    ->get();
+            }
+            if(in_array('student', $rights) || in_array('parent', $rights)) {
+                return Test::select('test.*')
+                    ->leftJoin('theme', 'theme.id', '=', 'test.theme_id')
+                    ->leftJoin('subjects', 'theme.subject_id', '=', 'theme.id')
+                    ->leftJoin('subject_group', 'subject_group.subject_id', '=', 'subjects.id')
+                    ->whereIn('subject_group.group_id', Auth::getUser()->groups()->get()->pluck('id'))
+                    ->groupBy('test.id')
+                    ->get();
+            }
+        }
+        $test = Test::where('theme_id', $data['themeId']);
+        if (!empty($data['name'])) {
+            //todo фильтр
+        }
+        return $test->get();
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    private function getDataByRequestTest(Request $request): array
+    {
+        $data = $request->all();
+        return validator(
+            $data,
+            [
+                'themeId' => 'nullable|integer',
+            ]
+        )->validate();
     }
 
 
