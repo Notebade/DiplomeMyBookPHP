@@ -45,6 +45,7 @@ class Subjects extends Model
         'media',
         'discipline',
         'themes',
+        'user'
     ];
 
     public function getNameAttribute(): ?string
@@ -95,6 +96,11 @@ class Subjects extends Model
     public function getDisciplineAttribute(): ?Discipline
     {
         return $this->discipline()->first();
+    }
+
+    public function getUserAttribute(): ?User
+    {
+        return $this->user()->first();
     }
 
 
