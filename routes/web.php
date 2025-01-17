@@ -118,6 +118,9 @@ Route::prefix('/list')->group(function () {
     Route::post('/rights', [ListController::class, 'rightsShows']);
     Route::post('/groups', [ListController::class, 'groupsShows']);
     Route::post('/users', [ListController::class, 'usersShows']);
+    Route::prefix('/result')->group(function () {
+        Route::post('/test', [ListController::class, 'testResults']);
+    });
     Route::post('/disciplines', [ListController::class, 'disciplineShows']);
     Route::post('/subjects', [ListController::class, 'subjectShows']);
     Route::post('/themes', [ListController::class, 'themesShows']);

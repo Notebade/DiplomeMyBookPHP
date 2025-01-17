@@ -8,6 +8,7 @@ use App\Modules\Subject\Models\Subjects;
 use App\Modules\Test\Models\QuestionType;
 use App\Modules\Test\Models\Test;
 use App\Modules\Test\Models\UserAnswersType;
+use App\Modules\Test\Models\UserTest;
 use App\Modules\Text\Models\Text;
 use App\Modules\Theme\Models\Theme;
 use App\Modules\User\Models\Groups;
@@ -203,6 +204,11 @@ class ListController extends Controller
                 'active' => 'nullable|boolean',
             ]
         )->validate();
+    }
+
+    public function testResults()
+    {
+        return UserTest::where('user_id', Auth::getUser()->id);
     }
 
     public function usersShows(Request $request): array

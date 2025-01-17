@@ -63,6 +63,8 @@ return new class extends Migration
 
         Schema::create('user_test', function (Blueprint $table) {
             $table->id();
+            $table->foreignid('user_id')->nullable()
+                ->references('id')->on('users')->onDelete('cascade');
             $table->foreignid('type_id')->nullable()
                 ->references('id')->on('user_answer_type')->onDelete('cascade');
             $table->foreignid('test_id')->nullable()

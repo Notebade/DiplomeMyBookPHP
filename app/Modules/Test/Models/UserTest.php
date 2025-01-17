@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Test\Models;
 
+use App\Modules\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,15 +23,28 @@ class UserTest extends Model
         'test_id',
         'trail',
         'score',
+        'user_id',
+    ];
+
+    protected $hidden = [
+        'type_id',
+        'test_id',
+        'user_id',
     ];
 
     protected $appends = [
         'answers',
+        'user',
     ];
 
     public function test(): BelongsTo
     {
         return $this->belongsTo(Test::class, 'test_id');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function type(): BelongsTo
@@ -46,5 +60,10 @@ class UserTest extends Model
     public function getAnswersAttribute(): mixed
     {
         return $this->answers()->get();
+    }
+
+    public function getUserAttribute(): mixed
+    {
+        return $this->user()->get();
     }
 }
