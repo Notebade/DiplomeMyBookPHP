@@ -208,7 +208,7 @@ class ListController extends Controller
 
     public function testResults()
     {
-        return UserTest::where('user_id', Auth::getUser()->id);
+        return UserTest::where('user_id', Auth::getUser()->id)->get() ?? [];
     }
 
     public function usersShows(Request $request): array

@@ -59,11 +59,11 @@ class UserTest extends Model
 
     public function getAnswersAttribute(): mixed
     {
-        return $this->answers()->get();
+        return $this->answers()?->get();
     }
 
     public function getUserAttribute(): mixed
     {
-        return $this->user()->get();
+        return $this->user()?->get();
     }
 }
