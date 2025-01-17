@@ -72,5 +72,11 @@ class GroupsSeeder extends Seeder
             ['subject_id' => 13, 'group_id' => 3], // Основы музыкальной теории
             ['subject_id' => 14, 'group_id' => 3], // Физкультура: Здоровье и тренировки
         ]);
+
+        DB::table('user_group')->insert([
+            ['user_id' => 5, 'group_id' => 3],
+            ['user_id' => 8, 'group_id' => 2],
+            ['user_id' => 7, 'group_id' => 1],
+        ]);
     }
 }
