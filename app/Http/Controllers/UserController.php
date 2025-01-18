@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Modules\Test\Models\UserAnswersType;
 use App\Modules\Test\Models\UserTest;
 use App\Modules\User\Models\Invite;
 use App\Modules\User\Models\User;
@@ -17,6 +18,7 @@ class UserController extends Controller
 {
 
     use Wrapper;
+
     public function index(User $user): User
     {
         return $user;
@@ -25,9 +27,9 @@ class UserController extends Controller
     public function activeUser(User $user): array
     {
         $user->active = true;
-        try  {
+        try {
             $user->save();
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             return self::failed($e->getMessage());
         }
         return self::success();
@@ -50,9 +52,9 @@ class UserController extends Controller
                 'message' => $e->getMessage()
             ];
         }
-        try  {
+        try {
             $invite = Invite::create($validator);
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             return self::failed($e->getMessage());
         }
         return $invite;
@@ -68,21 +70,21 @@ class UserController extends Controller
                 'message' => $e->getMessage()
             ];
         }
-        try  {
+        try {
             $user = User::create($validator);
-            if($validator['active']) {
+            if ($validator['active']) {
                 $token = Str::random(40);
                 $user->update(['remember_token' => $token]);
             }
-            if(!empty($validator['group'])) {
+            if (!empty($validator['group'])) {
                 $user->groups()->sync([$validator['group']['id']]);
             }
-            if(!empty($validator['rights'])) {
+            if (!empty($validator['rights'])) {
                 $rightsIds = array_column($validator['rights'], 'id');
                 $user->rights()->sync($rightsIds);
             }
             $user->update();
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             return self::failed($e->getMessage());
         }
         return $user->jsonSerialize($validator['active']);
@@ -98,9 +100,9 @@ class UserController extends Controller
                 'message' => $e->getMessage()
             ];
         }
-        try  {
+        try {
             $userTest = UserTest::create($validator);
-            if(!empty($validator['answers'])) {
+            if (!empty($validator['answers'])) {
                 $userAnswerIds = array_column($validator['answers'], 'id');
                 $userTest->answers()->sync($userAnswerIds);
             }
@@ -110,7 +112,7 @@ class UserController extends Controller
                 default => 2
             };
             $userTest->update();
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             return self::failed($e->getMessage());
         }
         return self::success();
@@ -123,7 +125,7 @@ class UserController extends Controller
         $count = $questions->count();
         $score = 0;
         foreach ($questions as $question) {
-            if('single' === $question->type()->first()->code || 'textArea' === $question->type()->first()->code) { //todo потом подумать как текстовый вод решить
+            if ('single' === $question->type()->first()->code || 'textArea' === $question->type()->first()->code) { //todo потом подумать как текстовый вод решить
                 $rightId = null;
                 foreach ($question->answers()->get() as $answer) {
                     if ($answer->right) {
@@ -131,7 +133,7 @@ class UserController extends Controller
                     }
                 }
                 foreach ($answers as $answer) {
-                    if($answer->id === $rightId) {
+                    if ($answer->id === $rightId) {
                         $score += 1;
                     }
                 }
@@ -145,14 +147,14 @@ class UserController extends Controller
                 $multi = 0;
                 foreach ($rightIds as $key => $value) {
                     foreach ($answers as $answer) {
-                        if($answer->question_id === $value) {
-                            if($answer->id === $key) {
+                        if ($answer->question_id === $value) {
+                            if ($answer->id === $key) {
                                 $multi += 1;
                             }
                         }
                     }
                 }
-                if($multi === count($rightIds)) {
+                if ($multi === count($rightIds)) {
                     $score += 1;
                 }
             }
@@ -261,12 +263,14 @@ class UserController extends Controller
         $data = $request->all();
         $data['user_id'] = Auth::getUser()->id;
         if (!empty($data['answers'])) {
-/*            foreach ($data['answers'] as &$answer) {
-                $answer = $this->getDataAnswersTestByArray($answer);
-            }*/
+            /*            foreach ($data['answers'] as &$answer) {
+                            $answer = $this->getDataAnswersTestByArray($answer);
+                        }*/
         }
         if (!empty($data['type'])) {
             $data['type_id'] = $data['type']['id'];
+        } else {
+            $data['type_id'] = UserAnswersType::where('code', 'process')->first()->id;
         }
         if (!empty($data['test'])) {
             $data['test_id'] = $data['test']['id'];

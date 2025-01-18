@@ -57,7 +57,7 @@ class DisciplineController extends Controller
         }
         $discipline->fill($validator);
         try  {
-            $discipline->save();
+            $discipline->update();
             if (!empty($validator['authors'])) {
                 $authorIds = array_column($validator['authors'], 'id');
                 $discipline->authors()->sync($authorIds);

@@ -53,7 +53,7 @@ class SubjectsController extends Controller
         }
         $subjects->fill($validator);
         try  {
-            $subjects->save();
+            $subjects->update();
             if (!empty($validator['groups'])) {
                 $groupsIds = array_column($validator['groups'], 'id');
                 $subjects->groups()->sync($groupsIds);

@@ -12,7 +12,7 @@ class UserAnswersType extends Model
 
     public $timestamps = false;
 
-    protected $table = 'answer_user_test';
+    protected $table = 'user_answer_type';
 
     protected $fillable = [
         'code',

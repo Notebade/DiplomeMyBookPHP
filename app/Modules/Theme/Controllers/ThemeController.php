@@ -76,7 +76,7 @@ class ThemeController extends Controller
                         ->decrement('position');
                 }
                 $theme->fill($value);
-                $theme->save();
+                $theme->update();
             }
         } catch (\Exception $e){
             return self::failed($e->getMessage());

@@ -57,7 +57,7 @@ class TextController extends Controller
         try  {
             foreach ($validator as $value) {
                 $text->fill($value);
-                $text->save();
+                $text->update();
                 if (!empty($value['media'])) {
                     $mediaIds = array_column($validator['media'], 'id');
                     $text->media()->sync($mediaIds);

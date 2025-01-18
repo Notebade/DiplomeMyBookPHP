@@ -32,7 +32,7 @@ class TestingController extends Controller
         }
         $test->fill($validator);
         try {
-            $test->save();
+            $test->update();
         } catch (\Exception $e) {
             return self::failed($e->getMessage());
         }

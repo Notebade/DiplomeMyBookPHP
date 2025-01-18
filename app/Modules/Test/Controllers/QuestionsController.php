@@ -31,7 +31,7 @@ class QuestionsController extends Controller
         }
         $questions->fill($validator);
         try {
-            $questions->save();
+            $questions->update();
         } catch (\Exception $e) {
             return self::failed($e->getMessage());
         }

@@ -50,7 +50,7 @@ class MediaController extends Controller
         }
         $media->fill($validator);
         try {
-            $media->save();
+            $media->update();
         } catch (\Exception $e) {
             return self::failed($e->getMessage());
         }
