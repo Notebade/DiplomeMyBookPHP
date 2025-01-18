@@ -101,7 +101,7 @@ class UserController extends Controller
             ];
         }
         try {
-            $userTest = UserTest::where('user_id', $validator['id'])
+            $userTest = UserTest::where('user_id', Auth::getUser()->id)
                 ->where('test_id', $validator['test_id'])
                 ->first();
             if (empty($userTest)) {
