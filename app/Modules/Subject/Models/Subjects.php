@@ -76,7 +76,7 @@ class Subjects extends Model
 
     public function groups(): BelongsToMany
     {
-        return $this->belongsToMany(Groups::class, 'subject_groups', 'subject_id', 'group_id');
+        return $this->belongsToMany(Groups::class, 'subject_group', 'subject_id', 'group_id');
     }
 
     public function discipline(): BelongsTo
