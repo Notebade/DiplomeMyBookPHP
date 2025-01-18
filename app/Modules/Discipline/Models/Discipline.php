@@ -106,6 +106,7 @@ class Discipline extends Model
                     unset($result['authors'][$key]);
                 }
             }
+            $result['authors'] = array_values($result['authors']);
         }
         return $result;
     }
