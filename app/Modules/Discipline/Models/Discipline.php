@@ -38,7 +38,8 @@ class Discipline extends Model
         'code',
         'description',
         'authors',
-        'media'
+        'media',
+        'groups',
     ];
 
     public function getNameAttribute(): ?string
@@ -88,6 +89,11 @@ class Discipline extends Model
     public function getMediaAttribute(): ?Media
     {
         return $this->media()->first();
+    }
+
+    public function getGroupsAttribute(): mixed
+    {
+        return $this->groups()->get();
     }
 
     public function jsonSerialize(bool $user = false): array
