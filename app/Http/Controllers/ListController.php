@@ -20,9 +20,13 @@ use Illuminate\Validation\ValidationException;
 
 class ListController extends Controller
 {
-    public function disciplineShows(): iterable
+    public function disciplineShows(Request $request): iterable
     {
+        $data = $request->all();
         $rights = Auth::getUser()->rights()->get()->pluck('code')->toArray();
+        if(!empty($data['discipline']['id'])) {
+            return Discipline::where('id',$data['discipline']['id'])->get();
+        }
         if(in_array('admin', $rights)) {
             return Discipline::all();
         }
