@@ -101,14 +101,21 @@ class UserController extends Controller
             ];
         }
         try {
-            $userTest = UserTest::create($validator);
+            $userTest = UserTest::where('user_id', $validator['id'])
+                ->where('test_id', $validator['test_id'])
+                ->first();
+            if (empty($userTest)) {
+                $userTest = UserTest::create($validator);
+            }
             if (!empty($validator['answers'])) {
                 $userAnswerIds = array_column($validator['answers'], 'id');
                 $userTest->answers()->sync($userAnswerIds);
             }
+            $userTest->trail += 1;
             $userTest->score = $this->scoreCounter($userTest);
             $userTest->type_id = match (true) {
-                $userTest->score <= 2 => 1, // todo потом переделать на поск по кодам success and failed
+                $userTest->score <= UserAnswersType::where('code', 'success')->first()->id
+                => UserAnswersType::where('code', 'failed')->first()->id ,
                 default => 2
             };
             $userTest->update();
