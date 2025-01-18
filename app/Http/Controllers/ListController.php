@@ -206,8 +206,14 @@ class ListController extends Controller
         )->validate();
     }
 
-    public function testResults()
+    public function testResults(Request $request)
     {
+        $data = $request->all();
+        if(!empty($data['test']['id'])) {
+            return UserTest::where('test_id', $data['test']['id'])
+                ->where('user_id', Auth::getUser()->id)
+                ->get();
+        }
         return UserTest::where('user_id', Auth::getUser()->id)->get() ?? [];
     }
 
