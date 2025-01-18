@@ -279,6 +279,7 @@ class UserController extends Controller
             $data,
             [
                 'type_id' => 'required|integer',
+                'user_id' => 'required|integer',
                 'test_id' => 'required|integer',
                 'trail' => 'nullable|integer',
                 'score' => 'nullable',
