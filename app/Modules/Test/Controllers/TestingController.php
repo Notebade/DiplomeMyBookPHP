@@ -20,7 +20,7 @@ class TestingController extends Controller
         return $test;
     }
 
-    public function update(Test $test, Request $request): iterable
+    public function update(Test $test, Request $request): Test|array
     {
         try {
             $validator = $this->requestData($request);
@@ -36,7 +36,7 @@ class TestingController extends Controller
         } catch (\Exception $e) {
             return self::failed($e->getMessage());
         }
-        return self::success();
+        return $test;
     }
 
     public function create(Request $request): Test|array
