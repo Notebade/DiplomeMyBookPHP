@@ -74,6 +74,9 @@ class TestingController extends Controller
     {
         $data = $request->all();
         $data['user_id'] = Auth::user()->id;
+        if(!empty($data['theme']['id'])) {
+            $data['theme_id'] = $data['theme']['id'];
+        }
         return validator(
             $data,
             [
