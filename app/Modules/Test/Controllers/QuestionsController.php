@@ -53,11 +53,11 @@ class QuestionsController extends Controller
             if (!empty($validator['answers'])) {
                 foreach ($validator['answers'] as &$answer) {
                     $answer['question_id'] = $questions->id;
-                    $answers = collect($validator['answers'])->map(function ($answer) {
-                        return new Answers($answer);
-                    });
-                    $questions->answers()->saveMany($answers);
                 }
+                $answers = collect($validator['answers'])->map(function ($answer) {
+                    return new Answers($answer);
+                });
+                $questions->answers()->saveMany($answers);
             }
         } catch (\Exception $e) {
             return self::failed($e->getMessage());
