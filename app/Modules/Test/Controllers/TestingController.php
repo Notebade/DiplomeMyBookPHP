@@ -67,6 +67,16 @@ class TestingController extends Controller
         return self::success();
     }
 
+    public function clear(Test $test): Test|array
+    {
+        try {
+            $test->questions()->delete();
+        } catch (\Exception $e) {
+            return self::failed($e->getMessage());
+        }
+        return self::success();
+    }
+
     /**
      * @throws ValidationException
      */
@@ -74,7 +84,7 @@ class TestingController extends Controller
     {
         $data = $request->all();
         $data['user_id'] = Auth::user()->id;
-        if(!empty($data['theme']['id'])) {
+        if (!empty($data['theme']['id'])) {
             $data['theme_id'] = $data['theme']['id'];
         }
         return validator(
