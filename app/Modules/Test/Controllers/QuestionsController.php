@@ -112,7 +112,7 @@ class QuestionsController extends Controller
             $data,
             [
                 'text' => 'required|string',
-                'right' => 'required|boolean|string',
+                'right' => 'required|string',
                 'question_id' => 'nullable|integer',
             ]
         )->validate();
