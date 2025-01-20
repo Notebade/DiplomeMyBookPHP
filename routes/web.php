@@ -52,7 +52,7 @@ Route::prefix('/test')->group(function () {
         Route::get('', [TestingController::class, 'show']);
         Route::post('', [TestingController::class, 'update']);
         Route::delete('', [TestingController::class, 'destroy']);
-        Route::delete('/questions/clear', [QuestionsController::class, 'clear']);
+        Route::delete('/questions/clear', [TestingController::class, 'clear']);
     });
     Route::post('', [TestingController::class, 'create']);
 });
