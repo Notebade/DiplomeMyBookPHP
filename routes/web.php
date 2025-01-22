@@ -22,7 +22,7 @@ Route::get('/token', function () {
 });
 
 Route::prefix('/user')->group(function () {
-    Route::prefix('auth')->group(function () {
+    Route::prefix('/auth')->group(function () {
         Route::post('/check', [UserController::class, 'check']);
     });
     Route::prefix('/zov')->group(function () {
