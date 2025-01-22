@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use App\Http\Controllers\GroupsController;
 use App\Http\Controllers\ListController;
 use App\Http\Controllers\PracticeController;
 use App\Http\Controllers\UserController;
@@ -67,6 +68,14 @@ Route::prefix('/questions')->group(function () {
         Route::delete('', [QuestionsController::class, 'destroy']);
     });
     Route::post('', [QuestionsController::class, 'create']);
+});
+Route::prefix('/groups')->group(function () {
+    Route::prefix('{groups:id}')->group(function () {
+        Route::get('', [GroupsController::class, 'show']);
+        Route::post('', [GroupsController::class, 'update']);
+        Route::delete('', [GroupsController::class, 'destroy']);
+    });
+    Route::post('', [GroupsController::class, 'create']);
 });
 
 Route::prefix('/discipline')->group(function () {
