@@ -75,7 +75,7 @@ class GroupsController extends Controller
             $data,
             [
                 'code' => 'required|string',
-                'text' => 'required|string',
+                'name' => 'required|string',
             ]
         )->validate();
     }
