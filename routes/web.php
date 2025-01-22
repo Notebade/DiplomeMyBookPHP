@@ -22,13 +22,16 @@ Route::get('/token', function () {
 });
 
 Route::prefix('/user')->group(function () {
+    Route::prefix('auth')->group(function () {
+        Route::post('/check', [UserController::class, 'check']);
+    });
     Route::prefix('/zov')->group(function () {
         Route::get('', [UserController::class, 'getInvite']);
         Route::post('', [UserController::class, 'invite']);
     });
     Route::post('/register', [UserController::class, 'register']);
     Route::prefix('/test')->group(function () {
-        Route::post('', [UserController::class, 'test']);//todo может быть каждый вопрос обновлять
+        Route::post('', [UserController::class, 'test']);
     });
     Route::post('/logging', [UserController::class, 'logging']);
     Route::prefix('{users:id}')->group(function () {

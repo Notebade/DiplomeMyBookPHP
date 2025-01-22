@@ -14,9 +14,10 @@ class Authenticate extends Middleware
     {
         //todo кастыль для обхода авторизации
         $excludedRoutes = [
-           'user/logging' => ['POST'],
-           'user/register' => ['POST'],
-           'user/zov' => ['GET'],
+            'user/logging' => ['POST'],
+            'user/register' => ['POST'],
+            'user/zov' => ['GET'],
+            'user/auth/check' => ['POST'],
         ];
 
         if (in_array($request->path(), array_keys($excludedRoutes))

@@ -6,11 +6,13 @@ namespace App\Http\Controllers;
 use App\Modules\Test\Models\UserAnswersType;
 use App\Modules\Test\Models\UserTest;
 use App\Modules\User\Models\Invite;
+use App\Modules\User\Models\Token;
 use App\Modules\User\Models\User;
 use App\Wrapper;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -58,6 +60,26 @@ class UserController extends Controller
             return self::failed($e->getMessage());
         }
         return $invite;
+    }
+
+    public function check(Request $request)
+    {
+        $data = $request->all();
+        if(empty($data['token'])) {
+            return [];
+        }
+        $token = Token::where('token', $data['token'])->first();
+        if (empty($token)) {
+            $userInfo = json_decode(Crypt::decryptString($data['token']), true);
+        } else {
+            $userInfo = json_decode(Crypt::decryptString($token->token), true);
+            $token->delete();
+        }
+        $user = User::where('id', $userInfo['id'])->firstOrFail();
+        $token = Crypt::encryptString(json_encode($user->jsonSerialize()));
+        Token::create(['token' => $token]);
+        $user->update(['remember_token' => $token]);
+        return $user->jsonSerialize(true);
     }
 
     public function register(Request $request): array
@@ -191,7 +213,8 @@ class UserController extends Controller
             ->where('password', $validator['password'])
             ->where('active', true)
             ->firstOrFail();
-        $token = Str::random(40);
+        $token = Crypt::encryptString(json_encode($user->jsonSerialize()));
+        Token::create(['token' => $token]);
         $user->update(['remember_token' => $token]);
         return $user->jsonSerialize(true);
     }

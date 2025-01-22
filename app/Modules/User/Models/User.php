@@ -120,6 +120,7 @@ class User extends Authenticatable
     public function jsonSerialize(bool $printToken = false): array
     {
         $user = self::toArray();
+        $user['token'] = null;
         if ($printToken) {
             $user['token'] = $this->remember_token;
         }
