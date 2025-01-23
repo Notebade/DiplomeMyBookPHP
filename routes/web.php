@@ -72,7 +72,7 @@ Route::prefix('/questions')->group(function () {
 Route::prefix('/groups')->group(function () {
     Route::prefix('{groups:id}')->group(function () {
         Route::get('', [GroupsController::class, 'show']);
-        Route::post('', [GroupsController::class, 'update']);
+        Route::put('', [GroupsController::class, 'update']);
         Route::delete('', [GroupsController::class, 'destroy']);
     });
     Route::post('', [GroupsController::class, 'create']);

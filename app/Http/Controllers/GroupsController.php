@@ -37,7 +37,7 @@ class GroupsController extends Controller
         return self::success();
     }
 
-    public function create(Request $request): Questions|array
+    public function create(Request $request): Groups|array
     {
         try {
             $validator = $this->requestData($request);
