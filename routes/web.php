@@ -35,7 +35,7 @@ Route::prefix('/user')->group(function () {
         Route::post('', [UserController::class, 'test']);
     });
     Route::post('/logging', [UserController::class, 'logging']);
-    Route::prefix('{users:id}')->group(function () {
+    Route::prefix('{user:id}')->group(function () {
         Route::get('', [UserController::class, 'index']);
         Route::get('/active', [UserController::class, 'activeUser']);
     });
