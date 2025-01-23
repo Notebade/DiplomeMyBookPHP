@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -210,9 +211,11 @@ class UserController extends Controller
             ];
         }
         $user = User::where('login', $validator['login'])
-            ->where('password', $validator['password'])
             ->where('active', true)
             ->firstOrFail();
+        if (!Hash::check($validator['password'], $user->password)) {
+            abort(401, 'Неверный пароль');
+        }
         $token = Crypt::encryptString(json_encode($user->jsonSerialize()));
         Token::create(['token' => $token]);
         $user->update(['remember_token' => $token]);
