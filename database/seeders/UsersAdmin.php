@@ -43,15 +43,6 @@ class UsersAdmin extends Seeder
                 'active' => 1,
             ],
             [
-                'login' => 'guest',
-                'first_name' => '',
-                'last_name' => '',
-                'middle_name' => '',
-                'email' => '',
-                'password' => '',
-                'active' => 0,
-            ],
-            [
                 'login' => 'student11',
                 'first_name' => 'ученик',
                 'last_name' => '11',
