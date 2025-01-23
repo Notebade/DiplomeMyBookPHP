@@ -225,7 +225,7 @@ class ListController extends Controller
     {
         $users = [];
         $data = $this->getDataByRequestUsers($request);
-        if (!empty($data['active'])) {
+        if (array_key_exists('active', $data)) {
             $usersModels = User::where('active', $data['active']);
         } else {
             $usersModels = User::where('active', true);
