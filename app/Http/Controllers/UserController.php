@@ -130,12 +130,18 @@ class UserController extends Controller
             if (empty($userTest)) {
                 $userTest = UserTest::create($validator);
             }
+            $answersStrings = [];
             if (!empty($validator['answers'])) {
                 $userAnswerIds = array_column($validator['answers'], 'id');
                 $userTest->answers()->sync($userAnswerIds);
+                foreach ($validator['answers'] as $answer) {
+                    if(array_key_exists('questionId', $answer)) {
+                        $answersStrings[] = $answer;
+                    }
+                }
             }
             $userTest->trail += 1;
-            $userTest->score = $this->scoreCounter($userTest);
+            $userTest->score = $this->scoreCounter($userTest, $answersStrings);
             $userTest->type_id = match (true) {
                 $userTest->score <= UserAnswersType::where('code', 'success')->first()->id
                 => UserAnswersType::where('code', 'failed')->first()->id ,
@@ -148,14 +154,14 @@ class UserController extends Controller
         return self::success();
     }
 
-    private function scoreCounter(UserTest $userTest): int
+    private function scoreCounter(UserTest $userTest, array $answersSelected = []): int
     {
         $questions = $userTest->test()->first()->questions()->get();
         $answers = $userTest->answers()->get();
         $count = $questions->count();
         $score = 0;
         foreach ($questions as $question) {
-            if ('single' === $question->type()->first()->code || 'textArea' === $question->type()->first()->code) { //todo потом подумать как текстовый вод решить
+            if ('single' === $question->type()->first()->code) { //todo потом подумать как текстовый вод решить
                 $rightId = null;
                 foreach ($question->answers()->get() as $answer) {
                     if ($answer->right) {
@@ -186,6 +192,16 @@ class UserController extends Controller
                 }
                 if ($multi === count($rightIds)) {
                     $score += 1;
+                }
+            } elseif ('textArea' === $question->type()->first()->code) { //костыль
+                foreach ($answersSelected as $answer) {
+                    if($answer['questionId'] == $question->id) {
+                        foreach ($question->answers()->get() as $item) {
+                            if($item->text == $answer['value']) {
+                                $score += 1;
+                            }
+                        }
+                    }
                 }
             }
         }

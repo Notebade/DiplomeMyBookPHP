@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('middle_name');
             $table->string('email');
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password', 255)->nullable();
             $table->longText('remember_token')->nullable();
             $table->boolean('active')->default(false);
             $table->timestamps();

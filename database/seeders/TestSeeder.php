@@ -33,7 +33,7 @@ class TestSeeder extends Seeder
                 'name' => 'несколько вариантов ответа',
             ],
             [
-                'code' => 'textAria',
+                'code' => 'textArea',
                 'name' => 'введите ответ',
             ],
         ]);
