@@ -22,7 +22,7 @@ class TextController extends Controller
     public function create(Request $request): array
     {
         try {
-            $validator = $this->getDataByRequest($request->all());
+            $validator = $this->getDataByRequest([$request->all()]);
         } catch (ValidationException $e) {
             return [
                 'status' => false,
@@ -44,10 +44,10 @@ class TextController extends Controller
         return $text;
     }
 
-    public function update(Request $request, Theme $theme, Text $text): array
+    public function update(Request $request, Text $text): array
     {
         try {
-            $validator = $this->getDataByRequest([$request->all()], $theme);
+            $validator = $this->getDataByRequest([$request->all()]);
         } catch (ValidationException $e) {
             return [
                 'status' => false,
@@ -85,13 +85,12 @@ class TextController extends Controller
     private function getDataByRequest(array $data): array
     {
         foreach ($data as &$value) {
-            $value['theme_id'] = $theme?->id ?? null;
             $value = validator(
                 $value,
                 [
                     'text' => 'required|string',
                     'media' => 'nullable|array',
-                    'position' => 'required|integer',
+                    'position' => 'nullable|integer',
                     'theme_id' => 'required|integer',
                 ]
             )->validate();
