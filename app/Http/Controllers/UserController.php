@@ -95,7 +95,7 @@ class UserController extends Controller
         try {
             $user = User::create($validator);
             if ($validator['active']) {
-                $token = Str::random(40);
+                $token = Crypt::encryptString(json_encode($user->jsonSerialize()));
                 $user->update(['remember_token' => $token]);
             }
             if (!empty($validator['group'])) {
