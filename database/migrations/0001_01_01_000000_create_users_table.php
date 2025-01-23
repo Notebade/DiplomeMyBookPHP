@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -19,8 +20,9 @@ return new class extends Migration
             $table->string('middle_name');
             $table->string('email');
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('password', 255)->nullable();
+            $table->longText('remember_token')->nullable();
+            $table->boolean('active')->default(false);
             $table->timestamps();
         });
 
