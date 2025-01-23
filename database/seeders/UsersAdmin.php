@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UsersAdmin extends Seeder
 {
@@ -21,7 +22,7 @@ class UsersAdmin extends Seeder
                 'last_name' => 'Vasiliev',
                 'middle_name' => 'Igorevich',
                 'email' => 'dimondi1010@gmail.com',
-                'password' => 'qweasdzxc',
+                'password' => Hash::make('qweasdzxc'),
                 'active' => 1,
             ],
             [
@@ -30,7 +31,7 @@ class UsersAdmin extends Seeder
                 'last_name' => 'Костышев',
                 'middle_name' => '',
                 'email' => '',
-                'password' => 'zxcasdqwe',
+                'password' => Hash::make('zxcasdqwe'),
                 'active' => 1,
             ],
             [
@@ -39,7 +40,7 @@ class UsersAdmin extends Seeder
                 'last_name' => 'Вальтер',
                 'middle_name' => '',
                 'email' => '',
-                'password' => 'qazxswedc',
+                'password' => Hash::make('qazxswedc'),
                 'active' => 1,
             ],
             [
@@ -57,7 +58,7 @@ class UsersAdmin extends Seeder
                 'last_name' => '11',
                 'middle_name' => 'А',
                 'email' => '',
-                'password' => 'student11а',
+                'password' => Hash::make('student11а'),
                 'active' => 1,
             ],
             [
@@ -66,7 +67,7 @@ class UsersAdmin extends Seeder
                 'last_name' => '11',
                 'middle_name' => 'А',
                 'email' => '',
-                'password' => 'parent11а',
+                'password' => Hash::make('parent11а'),
                 'active' => 1,
             ],
             [
@@ -75,7 +76,7 @@ class UsersAdmin extends Seeder
                 'last_name' => '7',
                 'middle_name' => 'Б',
                 'email' => '',
-                'password' => 'student7b',
+                'password' => Hash::make('student7b'),
                 'active' => 1,
             ],
             [
@@ -84,7 +85,7 @@ class UsersAdmin extends Seeder
                 'last_name' => '9',
                 'middle_name' => 'А',
                 'email' => '',
-                'password' => 'student9а',
+                'password' => Hash::make('student9а'),
                 'active' => 1,
             ],
             [
@@ -93,7 +94,7 @@ class UsersAdmin extends Seeder
                 'last_name' => 'Юрченко',
                 'middle_name' => 'Владиславовна',
                 'email' => 'yu_ta@list.ru',
-                'password' => 'KexibqGhtgjl#1',
+                'password' => Hash::make('KexibqGhtgjl#1'),
                 'active' => 1,
             ],
             [
@@ -102,7 +103,7 @@ class UsersAdmin extends Seeder
                 'last_name' => 'Юрченко',
                 'middle_name' => 'Владиславовна',
                 'email' => 'yu_ta@list.ru',
-                'password' => 'KexibqGhtgjl#1',
+                'password' => Hash::make('KexibqGhtgjl#1'),
                 'active' => 1,
             ],
         ]);

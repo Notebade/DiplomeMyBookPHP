@@ -51,7 +51,7 @@ return new class extends Migration
             $table->foreignid('question_id')->nullable()
                 ->references('id')->on('questions')->onDelete('cascade');
             $table->string('text');
-            $table->boolean('right')->default(false);
+            $table->string('right')->default(false);
         });
 
         Schema::create('user_answer_type', function (Blueprint $table) {

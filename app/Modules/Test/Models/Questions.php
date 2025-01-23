@@ -34,6 +34,7 @@ class Questions extends Model
         'type',
         'media',
         'answers',
+        'answersCount',
     ];
 
     public function type(): BelongsTo
@@ -64,5 +65,10 @@ class Questions extends Model
     public function getAnswersAttribute(): mixed
     {
         return $this->answers()->get();
+    }
+
+    public function getAnswersCountAttribute(): int
+    {
+        return $this->answers()->count() ?? 0;
     }
 }
