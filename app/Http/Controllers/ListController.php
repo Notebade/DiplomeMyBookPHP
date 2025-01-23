@@ -233,7 +233,7 @@ class ListController extends Controller
             $usersModels->select('users.*');
         if(!empty($data['rights'])) {
             $usersModels->leftJoin('user_right', 'user_right.user_id', '=', 'users.id');
-            $usersModels->whereIn('user_right.right_id', Rights::where('code', $data['rights'])->pluck('code'));
+            $usersModels->whereIn('user_right.right_id', Rights::where('code', $data['rights'])->pluck('id'));
         }
         foreach ($usersModels->get() as $user) {
             if ($user->id == Auth::getUser()->id) {
