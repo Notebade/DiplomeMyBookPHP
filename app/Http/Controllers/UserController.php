@@ -14,7 +14,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
@@ -163,8 +162,11 @@ class UserController extends Controller
         foreach ($questions as $question) {
             if ('single' === $question->type()->first()->code) { //todo потом подумать как текстовый вод решить
                 $rightId = null;
+                $sdQ = $question->toArray();
                 foreach ($question->answers()->get() as $answer) {
-                    if ($answer->right) {
+                    $sdA = $answer->toArray();
+                    $atvet = $answer->getRight();
+                    if ($answer->getRight()) {
                         $rightId = $answer->id;
                     }
                 }
