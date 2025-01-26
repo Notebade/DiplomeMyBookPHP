@@ -82,10 +82,10 @@ class QuestionsController extends Controller
     {
         $data = $request->all();
         if (!empty($data['type'])) {
-            $data['type_id'] = $data['type']['id'];
+            $data['type_id'] = (bool)$data['type']['id'];
         }
         if (!empty($data['test'])) {
-            $data['test_id'] = $data['test']['id'];
+            $data['test_id'] = (bool)$data['test']['id'];
         }
         if (!empty($data['answers'])) {
             foreach ($data['answers'] as &$answer) {
@@ -112,7 +112,7 @@ class QuestionsController extends Controller
             $data,
             [
                 'text' => 'required|string',
-                'right' => 'required|string',
+                'right' => 'required',
                 'question_id' => 'nullable|integer',
             ]
         )->validate();
