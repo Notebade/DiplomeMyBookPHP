@@ -162,17 +162,15 @@ class UserController extends Controller
         foreach ($questions as $question) {
             if ('single' === $question->type()->first()->code) { //todo потом подумать как текстовый вод решить
                 $rightId = null;
-                $sdQ = $question->toArray();
                 foreach ($question->answers()->get() as $answer) {
-                    $sdA = $answer->toArray();
-                    $atvet = $answer->getRight();
-                    if ($answer->getRight()) {
+                    if ($answer->right) {
                         $rightId = $answer->id;
                     }
                 }
                 foreach ($answers as $answer) {
                     if ($answer->id === $rightId) {
                         $score += 1;
+                        break;
                     }
                 }
             } elseif ('multiple' === $question->type()->first()->code) { // это пиздец лучше так не делать
